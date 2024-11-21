@@ -1,0 +1,20 @@
+{%extends "index.html"%}
+
+
+
+<a href="/">Joki</a>
+<a href="/uni">Universitātes</a>
+<hr>
+{%block saturs%}
+
+<h3>Nosaukums - Mājaslapa</h3>
+{%for viens in uni%}
+<p>
+<b>{{viens["nosaukums"]}}</b> - 
+{%for elem in viens["majaslapa"]%}
+    <a href="{{elem}}">Te Mājaslapa</a>
+    {%endfor%}
+</p>
+
+{%endfor%}
+{%endblock%}
