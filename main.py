@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import requests
 
 app = Flask(__name__)
@@ -32,6 +32,23 @@ def uni():
         nosaukumi.append(pieliekamais)
     
     return render_template("uni.html", uni = nosaukumi)
+
+
+
+@app.route("/chats")
+def chats():
+    return render_template("chats.html")
+
+
+@app.route("/suutiit", methods = ["POST"])
+def suutiit():
+    sanemtais = request.json
+    with open("chataZinas.txt", "a") as f:
+        f.write(sanemtais["saturs"])
+    return jsonify("OK")
+
+
+
 
 if __name__ == '__main__':
     app.run(port=5000)
