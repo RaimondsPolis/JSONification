@@ -22,5 +22,5 @@ auto_imports = "MachineLearning/auto_imports.csv"
 auto_simple = "MachineLearning/auto_simple.csv"
 
 
-heat_map("MachineLearning/auto_imports.csv")
+heat_map("MachineLearning/auto_imports.csv")#korelācijas grafiks
 #distribution(auto_simple, "Car")

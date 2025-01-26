@@ -43,12 +43,36 @@ def dabut_info(lapa):
         auto = {}
         auto['sludinajuma_saite']= lauki[1].find('a')['href']#atrod <a href="..."> sūdus
         auto['bilde'] = lauki[1].find('img')['src']# atrod <img src="..."> sūdus
+        auto['marka'] = lauki[3].get_text(strip=True)
+        auto['gads'] = lauki[4].get_text(strip=True)
+        auto['nobraukums'] = lauki[6].get_text(strip=True)
+        auto['cena'] = lauki[7].get_text(strip=True)
+        tilpums = lauki[5].get_text(strip=True)
+
+        if tilpums == "E":
+            tilpums = "Electric"
+
+        if "D" in tilpums:
+            parts = tilpums.split("D")
+            if len(parts) > 1 and parts[1] == "":
+                tilpums = parts[0] + " Diesel"
+
+        if "H" in tilpums:
+            parts = tilpums.split("H")
+            if len(parts) > 1 and parts[1] == "":
+                tilpums = parts[0] + " Hybrid"
+
+        if not "E" in tilpums and not "D" in tilpums and not "H" in tilpums:
+            tilpums = tilpums + " Gasoline"
+
+        auto['tilpums'] = tilpums
+
         dati.append(auto)
     return dati
 
 def saglaba_datus(dati):
     with open(DATI+"sslv.csv", "w", encoding="utf-8")as f:
-        lauku_nosaukumi = ['sludinajuma_saite', 'bilde']
+        lauku_nosaukumi = ['sludinajuma_saite', 'bilde','marka','gads','tilpums','nobraukums','cena']
         w = csv.DictWriter(f, fieldnames=lauku_nosaukumi)
         w.writeheader()
         for auto in dati:
@@ -67,7 +91,7 @@ def dabut_info_daudz(skaits):
         #visi_dati, stringu dati pievieno galā
     return visi_dati
 
-saglaba_visas_lapas(280)
+saglaba_visas_lapas(1)
 info = dabut_info_daudz(280)
 saglaba_datus(info)
         
