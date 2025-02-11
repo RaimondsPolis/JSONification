@@ -59,6 +59,7 @@ def uni():
 
 @app.route("/chats")
 def chats():
+
     return render_template("chats.html")
 
 
@@ -70,11 +71,17 @@ def suutiit():
             f.write("")
         return "Izdzests"
 
-    with open("chataZinas.txt", "a") as f:
+    with open("chataZinas.txt", "a") as f: # | "w" ir write | "b" ir binary | "r" ir read | "a" ir append | 
         f.write(sanemtais["vards"])
         f.write("----")
         f.write(sanemtais["saturs"])
         f.write("\n")
+    
+    with open("chataZinas.txt", "r") as f:
+        if f.read(sanemtais["saturs"]) == "/pink":
+            
+
+
     return jsonify("OK")
 
 @app.route("/jschats/lasiit")
@@ -82,6 +89,7 @@ def lasit():
     saturs = []
     with open("chataZinas.txt", "r") as f:
         saturs = f.readlines()
+        
     return saturs
 
 
