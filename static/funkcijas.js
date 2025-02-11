@@ -1,5 +1,5 @@
 
-const LAIKS = 5000
+const LAIKS = 1000
 
 
 

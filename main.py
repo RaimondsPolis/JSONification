@@ -1,21 +1,43 @@
 from flask import Flask, request, render_template, jsonify
-import requests
+import requests, random
 
 app = Flask(__name__)
 
-@app.route("/", methods = ["POST", "GET"])
+@app.route("/", methods=["POST", "GET"])
 def index():
-    atbilde = requests.get("https://api.chucknorris.io/jokes/random")
-    joks = atbilde.json()
-    atbilde = requests.get("https://api.chucknorris.io/jokes/categories")
-    kategorijas = atbilde.json()
+    joke_response = requests.get("https://api.chucknorris.io/jokes/random")
+    joke_data = joke_response.json()
+
+    category_response = requests.get("https://api.chucknorris.io/jokes/categories")
+    categories = category_response.json()
+
+    joke = joke_data["value"]
+    image_url = joke_data["icon_url"]
 
     if request.method == "POST":
-        kategorija = request.form["kat"]
-        atbilde = requests.get(f"https://api.chucknorris.io/jokes/random?category={kategorija}")
-        joks = atbilde.json()
+        if "kat" in request.form:  # pārbauda vai nospiestā poga ir par joka kategoriju
+            category = request.form["kat"]
+            joke_response = requests.get(f"https://api.chucknorris.io/jokes/random?category={category}")
+            joke_data = joke_response.json()
+            joke = joke_data["value"]
+            image_url = joke_data["icon_url"]
+        
+        elif "query" in request.form:  # pārbauda vai jāmeklē joks
+            query = request.form["query"]
+            search_response = requests.get(f"https://api.chucknorris.io/jokes/search?query={query}")
+            search_results = search_response.json()
 
-    return render_template("index.html", joks = joks["value"], bilde = joks["icon_url"],kategorijas = kategorijas)
+            if search_results["total"] > 0:
+                random_joke = random.choice(search_results["result"])  # no atrastajiem jokiem izvēlas random joku
+                joke = random_joke["value"]
+                image_url = random_joke["icon_url"]
+            else:
+                joke = "No jokes found for that phrase."
+                image_url = "https://api.chucknorris.io/img/chucknorris_logo_coloured_small@2x.png"
+
+    return render_template("index.html", joks=joke, bilde=image_url, kategorijas=categories)
+
+
 
 @app.route("/uni")
 def uni():
