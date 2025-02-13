@@ -76,11 +76,6 @@ def suutiit():
         f.write("----")
         f.write(sanemtais["saturs"])
         f.write("\n")
-    
-    with open("chataZinas.txt", "r") as f:
-        if f.read(sanemtais["saturs"]) == "/pink":
-            
-
 
     return jsonify("OK")
 

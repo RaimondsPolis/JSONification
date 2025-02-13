@@ -57,6 +57,10 @@ class List:
         pirmspedejais.next = None
         self.skaits -=1
 
+    def switch(self):
+        print()
+
+
 saraksts = List()
 
 saraksts.add("Suns", 254)
